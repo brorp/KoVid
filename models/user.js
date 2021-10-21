@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
       User.hasOne(models.Profile, { foreignKey: "UserId" });
       User.hasMany(models.Post, { foreignKey: "UserId"})
     }
+
+    static countUser() {
+      return User.count()
+    }
   };
   User.init({
     username: {

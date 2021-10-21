@@ -16,7 +16,6 @@ route.use(dataLogin);
 
 route.get("/", Controller.home); 
 route.use('/posts', routePost)
-
-// route.use("/profiles", routeProfile)
+route.use("/profiles", routeProfile)
 
 module.exports = route;
