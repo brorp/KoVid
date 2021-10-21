@@ -22,7 +22,12 @@ module.exports = (sequelize, DataTypes) => {
     postLike: DataTypes.INTEGER,
     postDislike: DataTypes.INTEGER,
     UserId: DataTypes.INTEGER
-  }, {
+  }, { hooks: { 
+    beforeCreate: (post, option) => {
+      post.postLike = 0
+      post.postDislike = 0
+    }
+   },
     sequelize,
     modelName: 'Post',
   });

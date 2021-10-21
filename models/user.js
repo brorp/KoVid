@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const bcrypt = require("bcryptjs");
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -11,14 +12,34 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       User.hasOne(models.Profile, { foreignKey: "UserId" });
-      User.hasMany(models.Posts, { foreignKey: "UserId"})
+      User.hasMany(models.Post, { foreignKey: "UserId"})
     }
   };
   User.init({
-    username: DataTypes.STRING,
-    password: DataTypes.STRING,
-    email: DataTypes.STRING
+    username: {
+      type: DataTypes.STRING,
+      validate: { notEmpty: {
+        msg: "Username Harus Diisi!"
+      }}
+    },
+    password: {
+      type: DataTypes.STRING,
+      validate: { notEmpty: {
+        msg: "Password Harus Diisi!"
+      }}
+    },
+    email: {
+      type: DataTypes.STRING,
+      validate: { isEmail: {
+        msg: "Format email tidak valid!"
+      }}
+    },
   }, {
+    hooks: {
+      beforeCreate: (user, options) => {
+        user.password = bcrypt.hashSync(user.password, 10)
+      }
+    },
     sequelize,
     modelName: 'User',
   });

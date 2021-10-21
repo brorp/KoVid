@@ -20,7 +20,12 @@ module.exports = (sequelize, DataTypes) => {
     commentDislike: DataTypes.INTEGER,
     UserId: DataTypes.INTEGER,
     PostId: DataTypes.INTEGER
-  }, {
+  }, { hooks: { 
+    beforeCreate: (comment, option) => {
+      comment.commentLike = 0
+      comment.commentDislike = 0
+    }
+   },
     sequelize,
     modelName: 'Comment',
   });
